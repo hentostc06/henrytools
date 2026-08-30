@@ -21,17 +21,17 @@ export const Footer = () => {
           </ul>
         </div>
         <div>
-          <h4 className="font-black text-[#002248] mb-4 tracking-wider text-xs uppercase">PERUSHAAN</h4>
+          <h4 className="font-black text-[#002248] mb-4 tracking-wider text-xs uppercase">TENTANG</h4>
           <ul className="space-y-2">
-            <li><a href="#" className="hover:text-[#00558E]">Tentang Kami</a></li>
-            <li><a href="#" className="hover:text-[#00558E]">Privasi & Kebijakan</a></li>
+            <li><Link href="/#privacy" className="hover:text-[#00558E]">Privasi File</Link></li>
+            <li><a href="https://github.com/hentostc06/henrytools" target="_blank" rel="noreferrer" className="hover:text-[#00558E]">Kode Sumber</a></li>
           </ul>
         </div>
         <div>
-          <h4 className="font-black text-[#002248] mb-4 tracking-wider text-xs uppercase">PRODUK</h4>
+          <h4 className="font-black text-[#002248] mb-4 tracking-wider text-xs uppercase">PEMROSESAN</h4>
           <ul className="space-y-2">
-            <li><a href="#" className="hover:text-[#00558E]">Aplikasi Desktop</a></li>
-            <li><a href="#" className="hover:text-[#00558E]">Aplikasi Mobile</a></li>
+            <li><span>100% di browser</span></li>
+            <li><span>Tanpa unggah file</span></li>
           </ul>
         </div>
         <div className="col-span-2 md:col-span-1">

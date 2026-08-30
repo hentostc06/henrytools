@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { FileUploader } from '../../components/FileUploader';
 import { imagesToPDF } from '../../lib/pdf-utils';
+import { downloadBytes } from '../../lib/browser-download';
 
 export default function Img2PdfPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -13,14 +14,9 @@ export default function Img2PdfPage() {
     setLoading(true);
     try {
       const bytes = await imagesToPDF(files);
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'converted_images.pdf';
-      a.click();
+      downloadBytes(bytes, 'converted_images.pdf');
     } catch (err) {
-      alert("Gagal mengubah gambar ke PDF.");
+      alert(err instanceof Error ? err.message : 'Gagal mengubah gambar ke PDF.');
     } finally {
       setLoading(false);
     }
@@ -34,6 +30,7 @@ export default function Img2PdfPage() {
       <FileUploader
         accept="image/png, image/jpeg"
         label="Pilih Gambar (JPG/PNG)"
+        helperText="atau tarik dan lepas gambar JPG/PNG di sini"
         onFilesSelected={(selected) => setFiles((prev) => [...prev, ...selected])}
       />
 
@@ -42,7 +39,10 @@ export default function Img2PdfPage() {
           <h2 className="font-semibold text-gray-700">Gambar Terpilih ({files.length}):</h2>
           <ul className="space-y-2">
             {files.map((f, i) => (
-              <li key={i} className="text-sm bg-gray-50 p-2 rounded border">{f.name}</li>
+              <li key={`${f.name}-${f.lastModified}-${i}`} className="flex items-center justify-between gap-3 text-sm bg-gray-50 p-2 rounded border">
+                <span className="truncate">{f.name}</span>
+                <button type="button" onClick={() => setFiles((current) => current.filter((_, index) => index !== i))} className="font-bold text-red-600">Hapus</button>
+              </li>
             ))}
           </ul>
           <button
