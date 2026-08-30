@@ -134,12 +134,9 @@ export const Navbar = () => {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-3">
-          <button className="hidden sm:block text-slate-700 hover:text-[#00558E] text-sm font-semibold px-3 py-2">
-            Masuk
-          </button>
-          <button className="bg-[#00558E] text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-[#2680BE] shadow-md shadow-blue-900/10 transition">
-            Daftar
-          </button>
+          <Link href="/#tools" className="hidden sm:block bg-[#00558E] text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-[#2680BE] shadow-md shadow-blue-900/10 transition">
+            Semua Perkakas
+          </Link>
           
           <button onClick={() => setIsMobileOpen(!isMobileOpen)} className="lg:hidden p-2 text-slate-600">
             ☰
@@ -151,7 +148,7 @@ export const Navbar = () => {
       {isMobileOpen && (
         <div className="lg:hidden bg-white border-b border-slate-200 p-4 space-y-2">
           {TOOLS.slice(0, 10).map((t) => (
-            <Link key={t.id} href={t.route} className="block px-3 py-2 text-sm font-semibold text-slate-700 hover:text-[#00558E]">
+            <Link key={t.id} href={t.route} onClick={() => setIsMobileOpen(false)} className="block px-3 py-2 text-sm font-semibold text-slate-700 hover:text-[#00558E]">
               {t.title}
             </Link>
           ))}

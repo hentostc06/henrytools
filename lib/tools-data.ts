@@ -1,5 +1,31 @@
 import { Tool } from '../types/pdf';
 
+/**
+ * Tools in this list run entirely in the browser and never upload a document.
+ * Other catalog entries stay discoverable, but their route explains the
+ * backend/API requirement instead of leading to a 404 or a fake success state.
+ */
+export const BROWSER_READY_TOOL_IDS = [
+  'merge',
+  'split',
+  'compress',
+  'img2pdf',
+  'edit',
+  'sign',
+  'watermark',
+  'rotate',
+  'organize',
+  'repair',
+  'page-numbers',
+  'scan',
+  'compare',
+  'crop',
+] as const;
+
+export function isBrowserReadyTool(id: string): boolean {
+  return (BROWSER_READY_TOOL_IDS as readonly string[]).includes(id);
+}
+
 export const TOOLS: Tool[] = [
   // ORGANIZE & OPTIMIZE
   {
@@ -23,7 +49,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'compress',
     title: 'Compress PDF',
-    description: 'Reduce file size while optimizing for maximal PDF quality.',
+    description: 'Optimalkan struktur PDF di browser tanpa mengubah isi dokumen.',
     category: 'optimize',
     route: '/compress',
     iconBg: 'bg-emerald-600',
@@ -96,7 +122,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'edit',
     title: 'Edit PDF',
-    description: 'Add text, images, shapes or freehand annotations to a PDF document.',
+    description: 'Tambahkan teks ke halaman dan posisi yang Anda pilih.',
     category: 'edit',
     route: '/edit',
     iconBg: 'bg-purple-600',
@@ -125,7 +151,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'sign',
     title: 'Sign PDF',
-    description: 'Sign yourself or request electronic signatures from others.',
+    description: 'Tambahkan tanda tangan visual berbasis teks ke posisi yang Anda pilih.',
     category: 'security',
     route: '/sign',
     iconBg: 'bg-blue-600',
@@ -134,7 +160,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'watermark',
     title: 'Watermark',
-    description: 'Stamp an image or text over your PDF in seconds. Choose typography, transparency and position.',
+    description: 'Tambahkan watermark teks transparan ke seluruh halaman PDF.',
     category: 'edit',
     route: '/watermark',
     iconBg: 'bg-pink-600',
@@ -143,7 +169,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'rotate',
     title: 'Rotate PDF',
-    description: 'Rotate your PDFs the way you need them. You can even rotate multiple PDFs at once!',
+    description: 'Putar semua halaman atau rentang halaman tertentu sebesar 90°, 180°, atau 270°.',
     category: 'edit',
     route: '/rotate',
     iconBg: 'bg-purple-600',
@@ -182,7 +208,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'organize',
     title: 'Organize PDF',
-    description: 'Sort pages of your PDF file however you like. Delete PDF pages or add PDF pages at your convenience.',
+    description: 'Hapus satu halaman atau beberapa rentang halaman dari PDF.',
     category: 'organize',
     route: '/organize',
     iconBg: 'bg-red-600',
@@ -201,7 +227,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'repair',
     title: 'Repair PDF',
-    description: 'Repair a damaged PDF and recover data from corrupt PDF. Fix PDF files with our Repair tool.',
+    description: 'Muat ulang dan tulis kembali struktur PDF yang masih dapat dibaca.',
     category: 'optimize',
     route: '/repair',
     iconBg: 'bg-emerald-600',
@@ -210,7 +236,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'page-numbers',
     title: 'Page numbers',
-    description: 'Add page numbers into PDFs with ease. Choose your positions, dimensions, typography.',
+    description: 'Tambahkan nomor halaman dengan nomor awal dan posisi yang dapat dipilih.',
     category: 'edit',
     route: '/page-numbers',
     iconBg: 'bg-violet-600',
@@ -219,7 +245,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'scan',
     title: 'Scan to PDF',
-    description: 'Capture document scans from your mobile device and send them instantly to your browser.',
+    description: 'Ambil foto dari kamera ponsel atau galeri lalu gabungkan menjadi PDF.',
     category: 'organize',
     route: '/scan',
     iconBg: 'bg-green-600',
@@ -237,7 +263,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'compare',
     title: 'Compare PDF',
-    description: 'Show a side-by-side document comparison and easily spot changes between different file versions.',
+    description: 'Bandingkan ukuran, jumlah halaman, judul, dan metadata dua PDF.',
     category: 'security',
     route: '/compare',
     iconBg: 'bg-blue-600',
@@ -255,7 +281,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'crop',
     title: 'Crop PDF',
-    description: 'Crop margins of PDF documents or select specific areas, then apply changes to the whole document.',
+    description: 'Potong margin tampilan seluruh halaman PDF dengan ukuran yang konsisten.',
     category: 'edit',
     route: '/crop',
     iconBg: 'bg-amber-600',

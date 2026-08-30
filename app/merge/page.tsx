@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { FileUploader } from '../../components/FileUploader';
 import { mergePDFs } from '../../lib/pdf-utils';
+import { downloadBytes } from '../../lib/browser-download';
 
 export default function MergePage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -13,14 +14,9 @@ export default function MergePage() {
     setProcessing(true);
     try {
       const pdfBytes = await mergePDFs(files);
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'merged_henrytools.pdf';
-      a.click();
+      downloadBytes(pdfBytes, 'merged_henrytools.pdf');
     } catch (err) {
-      alert('Gagal menggabungkan file PDF.');
+      alert(err instanceof Error ? err.message : 'Gagal menggabungkan file PDF.');
     } finally {
       setProcessing(false);
     }
@@ -40,9 +36,12 @@ export default function MergePage() {
           <h3 className="font-bold text-[#002248] mb-4">File Terpilih ({files.length}):</h3>
           <ul className="space-y-2 mb-6">
             {files.map((f, i) => (
-              <li key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl text-sm border border-slate-100">
+              <li key={`${f.name}-${f.lastModified}-${i}`} className="flex items-center justify-between gap-3 p-3 bg-slate-50 rounded-xl text-sm border border-slate-100">
                 <span className="font-medium text-slate-700">{f.name}</span>
-                <span className="text-xs text-slate-400 font-mono">{(f.size / 1024 / 1024).toFixed(2)} MB</span>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-slate-400 font-mono">{(f.size / 1024 / 1024).toFixed(2)} MB</span>
+                  <button type="button" onClick={() => setFiles((current) => current.filter((_, index) => index !== i))} className="font-bold text-red-600">Hapus</button>
+                </div>
               </li>
             ))}
           </ul>

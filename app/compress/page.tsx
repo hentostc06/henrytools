@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { FileUploader } from '../../components/FileUploader';
 import { compressPDF } from '../../lib/pdf-utils';
+import { downloadBytes } from '../../lib/browser-download';
 
 export default function CompressPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -13,14 +14,9 @@ export default function CompressPage() {
     setProcessing(true);
     try {
       const pdfBytes = await compressPDF(file);
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `compressed_${file.name}`;
-      a.click();
+      downloadBytes(pdfBytes, `compressed_${file.name}`);
     } catch (err) {
-      alert('Gagal mengompres PDF.');
+      alert(err instanceof Error ? err.message : 'Gagal mengoptimalkan PDF.');
     } finally {
       setProcessing(false);
     }
@@ -39,6 +35,8 @@ export default function CompressPage() {
         <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
           <p className="font-bold text-[#002248]">File: {file.name}</p>
           <p className="text-sm text-slate-500">Ukuran Awal: {(file.size / 1024 / 1024).toFixed(2)} MB</p>
+          <p className="text-xs text-amber-700 bg-amber-50 rounded-xl p-3">Optimasi browser merapikan struktur PDF. PDF yang gambarnya sudah terkompres mungkin tidak menjadi lebih kecil.</p>
+          <button type="button" onClick={() => setFile(null)} className="text-sm font-bold text-red-600">Ganti file</button>
           <button
             onClick={handleCompress}
             disabled={processing}
